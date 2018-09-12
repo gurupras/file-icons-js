@@ -1,6 +1,6 @@
 {
   "name": "@gurupras/file-icons-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "File specific icons for the browser from Atom File-icons, https://github.com/file-icons/atom. Forked from https://github.com/websemantics/file-icons-js.",
   "main": "index.js",
