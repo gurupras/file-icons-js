@@ -156,6 +156,7 @@
 .checklist-icon:before    { font-family: octicons; font-size: 16px; top: 1px; content: "\f076"; font-size: 17px; left: 1px; }
 .code-icon:before         { font-family: octicons; font-size: 16px; top: 1px; content: "\f05f"; }
 .database-icon:before     { font-family: octicons; font-size: 16px; top: 1px; content: "\f096"; }
+.folder-icon:before       { font-family: octicons; font-size: 16px; top: 1px; content: "\f016"; }
 .gear-icon:before         { font-family: octicons; font-size: 16px; top: 1px; content: "\f02f"; }
 .git-commit-icon:before   { font-family: octicons; font-size: 16px; top: 1px; content: "\f01f"; }
 .git-merge-icon:before    { font-family: octicons; font-size: 16px; top: 1px; content: "\f023"; }
