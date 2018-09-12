@@ -6,8 +6,8 @@
 │    │   │   ││   ││  ────┤  │    ││      ││   ╰╯ ││   ││ │├────  │
 ╰────╯   ╰───╯╰───╯╰──────╯  ╰────╯╰──────╯╰──────╯╰───╯╰─╯╰──────╯
 ╭─╮  ╭─╮  ┬─╮         ┬  ╭─╮  ┬  ┬  ╭─╮  ╭─╮  ╭─╮  ┬─╮  ┬  ╭─╮  ╭┬╮
-├┤   │ │  ├┬╯         │  ├─┤  ╰╮╭╯  ├─┤  ╰─╮  │    ├┬╯  │  ├─╯   │ 
-┴    ╰─╯  ┴╰─       ╰─╯  ┴ ┴   ╰╯   ┴ ┴  ╰─╯  ╰─╯  ┴╰─  ┴  ┴     ┴ 
+├┤   │ │  ├┬╯         │  ├─┤  ╰╮╭╯  ├─┤  ╰─╮  │    ├┬╯  │  ├─╯   │
+┴    ╰─╯  ┴╰─       ╰─╯  ┴ ┴   ╰╯   ┴ ┴  ╰─╯  ╰─╯  ┴╰─  ┴  ┴     ┴
 ```
 > File specific icons for the browser from Atom File-icons, https://github.com/file-icons/atom
 
@@ -15,16 +15,10 @@
 
 ## Install
 
-Use `npm` to install as follows, 
+Use `npm` to install as follows,
 
 ```bash
-npm i websemantics/file-icons-js
-```
-
-Or, `Bower`, 
-
-```bash
-bower i websemantics/file-icons-js
+npm i @gurupras/file-icons-js
 ```
 
 ## Getting Started
@@ -58,17 +52,8 @@ document.body.innerHTML = "<a><i class=" + class_name + "></i>$filename</a>";
 ```
 
 ## Resources
-
+- [websemantics/file-icons-js](https://github.com/websemantics/file-icons-js), Original repository from which this was forked.
 - [Atom File Icons](https://github.com/file-icons/atom), file specific icons for improved visual grepping.
-- [Markdown Browser Plus](https://github.com/websemantics/markdown-browser-plus), Github flavoured, local file browser for markdown docs.
-
-## Support
-
-Need help or have a question? post at [StackOverflow](https://stackoverflow.com/questions/tagged/file-icons-js+websemantics).
-
-*Please don't use the issue trackers for support/questions.*
-
-*Star if you find this project useful, to show support or simply for being awesome :)*
 
 ## Contribution
 
@@ -76,4 +61,4 @@ Contributions to this project are accepted in the form of feedback, bugs reports
 
 ## License
 
-[MIT license](http://opensource.org/licenses/mit-license.php) Copyright (c) Web Semantics, Inc.
+[MIT license](https://github.com/gurupras/file-icons-js/)
