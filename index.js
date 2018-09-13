@@ -46,20 +46,21 @@ var cache = {
  * @constructor
  */
 
-var Icon = function (index, data) {
-  this.index = index
-  this.icon = data[0]
-  this.colour = data[1]
-  this.match = data[2]
-  this.priority = data[3] || 1
-  this.matchPath = data[4] || false
-  this.interpreter = data[5] || null
-  this.scope = data[6] || null
-  this.lang = data[7] || null
-  this.signature = data[8] || null
-}
+class Icon {
+  constructor (index, data) {
+    this.index = index
+    this.icon = data[0]
+    this.colour = data[1]
+    this.match = data[2]
+    this.priority = data[3] || 1
+    this.matchPath = data[4] || false
+    this.interpreter = data[5] || null
+    this.scope = data[6] || null
+    this.lang = data[7] || null
+    this.signature = data[8] || null
+  }
 
-/**
+  /**
  * Return the CSS classes for displaying the icon.
  *
  * @param {Number|null} colourMode
@@ -67,16 +68,17 @@ var Icon = function (index, data) {
  * @return {String}
  */
 
-Icon.prototype.getClass = function (colourMode, asArray) {
-  colourMode = colourMode !== undefined ? colourMode : null
-  asArray = asArray !== undefined ? asArray : false
+  getClass (colourMode, asArray) {
+    colourMode = colourMode !== undefined ? colourMode : null
+    asArray = asArray !== undefined ? asArray : false
 
-  // No colour needed or available
-  if (colourMode === null || this.colour[0] === null) { return asArray ? [this.icon] : this.icon }
+    // No colour needed or available
+    if (colourMode === null || this.colour[0] === null) { return asArray ? [this.icon] : this.icon }
 
-  return asArray
-    ? [this.icon, this.colour[colourMode]]
-    : this.icon + ' ' + this.colour[colourMode]
+    return asArray
+      ? [this.icon, this.colour[colourMode]]
+      : this.icon + ' ' + this.colour[colourMode]
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -96,14 +98,15 @@ Icon.prototype.getClass = function (colourMode, asArray) {
  * @constructor
  */
 
-var IconTables = function (data) {
-  this.directoryIcons = this.read(data[0])
-  this.fileIcons = this.read(data[1])
-  this.binaryIcon = this.matchScope('source.asm')
-  this.executableIcon = this.matchInterpreter('bash')
-}
+class IconTables {
+  constructor (data) {
+    this.directoryIcons = this.read(data[0])
+    this.fileIcons = this.read(data[1])
+    this.binaryIcon = this.matchScope('source.asm')
+    this.executableIcon = this.matchInterpreter('bash')
+  }
 
-/**
+  /**
  * Populate icon-lists from a icons data table.
  *
  * @param {Array} table
@@ -111,96 +114,96 @@ var IconTables = function (data) {
  * @private
  */
 
-IconTables.prototype.read = function (table) {
-  var icons = table[0]
-  var indexes = table[1]
+  read (table) {
+    var icons = table[0]
+    var indexes = table[1]
 
-  icons = icons.map(function (icon, index) {
-    return new Icon(index, icon)
-  })
-
-  // Dereference Icon instances from their stored offset
-  indexes = indexes.map(function (index) {
-    return index.map(function (offset) {
-      return icons[offset]
+    icons = icons.map(function (icon, index) {
+      return new Icon(index, icon)
     })
-  })
 
-  return {
-    byName: icons,
-    byInterpreter: indexes[0],
-    byLanguage: indexes[1],
-    byPath: indexes[2],
-    byScope: indexes[3],
-    bySignature: indexes[4]
+    // Dereference Icon instances from their stored offset
+    indexes = indexes.map(function (index) {
+      return index.map(function (offset) {
+        return icons[offset]
+      })
+    })
+
+    return {
+      byName: icons,
+      byInterpreter: indexes[0],
+      byLanguage: indexes[1],
+      byPath: indexes[2],
+      byScope: indexes[3],
+      bySignature: indexes[4]
+    }
   }
-}
 
-/**
+  /**
  * Match an icon using a resource's basename.
  *
  * @param {String} name - Name of filesystem entity
  * @param {Boolean} [directory=false] - Match folders instead of files
  * @return {Icon}
  */
-IconTables.prototype.matchName = function (name, directory) {
-  directory = directory !== undefined
-    ? directory
-    : false
-  var cachedIcons = directory
-    ? this.cache.directoryName
-    : cache.fileName
-  var icons = directory
-    ? this.directoryIcons.byName
-    : this.fileIcons.byName
+  matchName (name, directory) {
+    directory = directory !== undefined
+      ? directory
+      : false
+    var cachedIcons = directory
+      ? this.cache.directoryName
+      : cache.fileName
+    var icons = directory
+      ? this.directoryIcons.byName
+      : this.fileIcons.byName
 
-  if (cachedIcons[name]) {
-    return cachedIcons[name]
-  }
-
-  for (var i in icons) {
-    var icon = icons[i]
-    if (icon.match.test(name)) {
-      cachedIcons[name] = icon
-      return
+    if (cachedIcons[name]) {
+      return cachedIcons[name]
     }
-  }
-  return null
-}
 
-/**
+    for (var i in icons) {
+      var icon = icons[i]
+      if (icon.match.test(name)) {
+        cachedIcons[name] = icon
+        return icon
+      }
+    }
+    return null
+  }
+
+  /**
  * Match an icon using a resource's system path.
  *
  * @param {String} path - Full pathname to check
  * @param {Boolean} [directory=false] - Match folders instead of files
  * @return {Icon}
  */
-IconTables.prototype.matchPath = function (path, directory) {
-  directory = directory !== undefined
-    ? directory
-    : false
-  var cachedIcons = directory
-    ? cache.directoryName
-    : cache.fileName
-  var icons = directory
-    ? this.directoryIcons.byPath
-    : this.fileIcons.byPath
+  matchPath (path, directory) {
+    directory = directory !== undefined
+      ? directory
+      : false
+    var cachedIcons = directory
+      ? cache.directoryName
+      : cache.fileName
+    var icons = directory
+      ? this.directoryIcons.byPath
+      : this.fileIcons.byPath
 
-  if (cachedIcons[name]) {
-    return cachedIcons[name]
-  }
-
-  for (var i in icons) {
-    var icon = icons[i]
-    if (icon.match.test(path)) {
-      cachedIcons[path] = icon
-      return
+    if (cachedIcons[name]) {
+      return cachedIcons[name]
     }
-  }
-  return null
-}
 
-/**
+    for (var i in icons) {
+      var icon = icons[i]
+      if (icon.match.test(path)) {
+        cachedIcons[path] = icon
+        return icon
+      }
+    }
+    return null
+  }
+
+  /**
  * Match an icon using the human-readable form of its related language.
  *
  * Typically used for matching modelines and Linguist-language attributes.
@@ -209,44 +212,44 @@ IconTables.prototype.matchPath = function (path, directory) {
  * @param {String} name - Name/alias of language
  * @return {Icon}
  */
-IconTables.prototype.matchLanguage = function (name) {
-  if (cache.language[name]) {
-    return cache.language[name]
-  }
-
-  for (var i in this.fileIcons.byLanguage) {
-    var icon = this.fileIcons.byLanguage[i]
-    if (icon.lang.test(name)) {
-      cache.language[name] = icon
-      return
+  matchLanguage (name) {
+    if (cache.language[name]) {
+      return cache.language[name]
     }
-  }
-  return null
-}
 
-/**
+    for (var i in this.fileIcons.byLanguage) {
+      var icon = this.fileIcons.byLanguage[i]
+      if (icon.lang.test(name)) {
+        cache.language[name] = icon
+        return icon
+      }
+    }
+    return null
+  }
+
+  /**
  * Match an icon using the grammar-scope assigned to it.
  *
  * @example IconTables.matchScope("source.js")
  * @param {String} name
  * @return {Icon}
  */
-IconTables.prototype.matchScope = function (name) {
-  if (cache.scope[name]) {
-    return cache.scope[name]
-  }
-
-  for (var i in this.fileIcons.byScope) {
-    var icon = this.fileIcons.byScope[i]
-    if (icon.scope.test(name)) {
-      cache.scope[name] = icon
-      return
+  matchScope (name) {
+    if (cache.scope[name]) {
+      return cache.scope[name]
     }
-  }
-  return null
-}
 
-/**
+    for (var i in this.fileIcons.byScope) {
+      var icon = this.fileIcons.byScope[i]
+      if (icon.scope.test(name)) {
+        cache.scope[name] = icon
+        return icon
+      }
+    }
+    return null
+  }
+
+  /**
  * Match an icon using the name of an interpreter which executes its language.
  *
  * Used for matching interpreter directives (a.k.a., "hashbangs").
@@ -255,29 +258,30 @@ IconTables.prototype.matchScope = function (name) {
  * @param {String} name
  * @return {Icon}
  */
-IconTables.prototype.matchInterpreter = function (name) {
-  if (cache.interpreter[name]) {
-    return cache.interpreter[name]
-  }
-
-  for (var i in this.fileIcons.byInterpreter) {
-    var icon = this.fileIcons.byInterpreter[i]
-    if (icon.interpreter.test(name)) {
-      cache.interpreter[name] = icon
-      return
+  matchInterpreter (name) {
+    if (cache.interpreter[name]) {
+      return cache.interpreter[name]
     }
-  }
-  return null
-}
 
-/**
+    for (var i in this.fileIcons.byInterpreter) {
+      var icon = this.fileIcons.byInterpreter[i]
+      if (icon.interpreter.test(name)) {
+        cache.interpreter[name] = icon
+        return icon
+      }
+    }
+    return null
+  }
+
+  /**
  * Match an icon using a resource's file signature.
  *
  * @example IconTables.matchSignature("\x1F\x8B")
  * @param {String} data
  * @return {Icon}
  */
-IconTables.prototype.matchSignature = function (data) {}
+  matchSignature (data) {}
+}
 
 /* ---------------------------------------------------------------------------
  * Icons Database
@@ -1383,11 +1387,12 @@ var icondb = [
  * @constructor
  */
 
-var FileIcons = function (icondb) {
-  this.db = new IconTables(icondb)
-}
+class FileIcons {
+  constructor (icondb) {
+    this.db = new IconTables(icondb)
+  }
 
-/**
+  /**
  * Get icon class name of the provided filename. If not found, default to text icon.
  *
  * @param {string} name - file name
@@ -1395,12 +1400,12 @@ var FileIcons = function (icondb) {
  * @public
  */
 
-FileIcons.prototype.getClass = function (name) {
-  var match = this.db.matchName(name)
-  return match ? match.getClass() : null
-}
+  getClass (name) {
+    var match = this.db.matchName(name)
+    return match ? match.getClass() : null
+  }
 
-/**
+  /**
  * Get icon class name of the provided filename with color. If not found, default to text icon.
  *
  * @param {string} name - file name
@@ -1408,9 +1413,15 @@ FileIcons.prototype.getClass = function (name) {
  * @public
  */
 
-FileIcons.prototype.getClassWithColor = function (name) {
-  var match = this.db.matchName(name)
-  return match ? match.getClass(0) : null
+  getClassWithColor (name) {
+    var match = this.db.matchName(name)
+    return match ? match.getClass(0) : null
+  }
+
+  getCache () {
+    return cache
+  }
 }
 
-export default new FileIcons(icondb)
+const fileIcons = new FileIcons(icondb)
+export default fileIcons
