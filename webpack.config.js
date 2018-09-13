@@ -7,7 +7,7 @@ module.exports = {
     library: 'FileIcons',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: path.join('css', 'bundle.js')
   },
   module: {
     rules: [
